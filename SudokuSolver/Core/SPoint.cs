@@ -1,6 +1,6 @@
 ﻿namespace Kermalis.SudokuSolver.Core
 {
-    internal sealed class SPoint
+    public sealed class SPoint
     {
         public int X { get; }
         public int Y { get; }
@@ -27,11 +27,11 @@
         }
         public static string RowLetter(int row)
         {
-            return ((char)(row + 'A')).ToString();
+            return 'R'+(row + 1).ToString();
         }
         public static string ColumnLetter(int column)
         {
-            return (column + 1).ToString();
+            return 'C'+(column + 1).ToString();
         }
         public override string ToString()
         {

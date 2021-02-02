@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Kermalis.SudokuSolver.Core
 {
-    internal sealed class CellSnapshot
+    public sealed class CellSnapshot
     {
         public int Value { get; }
         public ReadOnlyCollection<int> Candidates { get; }
@@ -22,7 +22,7 @@ namespace Kermalis.SudokuSolver.Core
     }
 
     [DebuggerDisplay("{DebugString()}", Name = "{ToString()}")]
-    internal sealed class Cell
+    public sealed class Cell
     {
         public int Value { get; private set; }
         public HashSet<int> Candidates { get; } = new HashSet<int>(Utils.OneToNine);

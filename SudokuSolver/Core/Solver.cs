@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Kermalis.SudokuSolver.Core
 {
-    internal sealed class Solver
+    public sealed class Solver
     {
         private sealed class SolverTechnique
         {
@@ -24,23 +24,23 @@ namespace Kermalis.SudokuSolver.Core
         private static readonly SolverTechnique[] _techniques = new SolverTechnique[]
         {
             new SolverTechnique(HiddenSingle, "Hidden single"),
-            new SolverTechnique(NakedPair, "https://hodoku.sourceforge.net/en/tech_naked.php#n2"),
-            new SolverTechnique(HiddenPair, "https://hodoku.sourceforge.net/en/tech_hidden.php#h2"),
+            new SolverTechnique(NakedPair, "https://www.sudokuwiki.org/Naked_Candidates"),
+            new SolverTechnique(HiddenPair, "https://www.sudokuwiki.org/Hidden_Candidates"),
             new SolverTechnique(LockedCandidate, "https://hodoku.sourceforge.net/en/tech_intersections.php#lc1"),
             new SolverTechnique(PointingTuple, "https://hodoku.sourceforge.net/en/tech_intersections.php#lc1"),
-            new SolverTechnique(NakedTriple, "https://hodoku.sourceforge.net/en/tech_naked.php#n3"),
-            new SolverTechnique(HiddenTriple, "https://hodoku.sourceforge.net/en/tech_hidden.php#h3"),
-            new SolverTechnique(XWing, "https://hodoku.sourceforge.net/en/tech_fishb.php#bf2"),
-            new SolverTechnique(Swordfish, "https://hodoku.sourceforge.net/en/tech_fishb.php#bf3"),
+            new SolverTechnique(NakedTriple, "https://www.sudokuwiki.org/Naked_Candidates"),
+            new SolverTechnique(HiddenTriple, "https://www.sudokuwiki.org/Hidden_Candidates"),
+            new SolverTechnique(XWing, "https://www.sudokuwiki.org/X_Wing_Strategy"),
+            new SolverTechnique(Swordfish, "https://www.sudokuwiki.org/Sword_Fish_Strategy"),
             new SolverTechnique(YWing, "https://www.sudokuwiki.org/Y_Wing_Strategy"),
             new SolverTechnique(XYZWing, "https://www.sudokuwiki.org/XYZ_Wing"),
             new SolverTechnique(XYChain, "https://www.sudokuwiki.org/XY_Chains"),
-            new SolverTechnique(NakedQuadruple, "https://hodoku.sourceforge.net/en/tech_naked.php#n4"),
-            new SolverTechnique(HiddenQuadruple, "https://hodoku.sourceforge.net/en/tech_hidden.php#h4"),
-            new SolverTechnique(Jellyfish, "https://hodoku.sourceforge.net/en/tech_fishb.php#bf4"),
-            new SolverTechnique(UniqueRectangle, "https://hodoku.sourceforge.net/en/tech_ur.php"),
+            new SolverTechnique(NakedQuadruple, "https://www.sudokuwiki.org/Naked_Candidates"),
+            new SolverTechnique(HiddenQuadruple, "https://www.sudokuwiki.org/Hidden_Candidates"),
+            new SolverTechnique(Jellyfish, "https://www.sudokuwiki.org/Jelly_Fish_Strategy"),
+            new SolverTechnique(UniqueRectangle, "https://www.sudokuwiki.org/Unique_Rectangles"),
             new SolverTechnique(HiddenRectangle, "https://hodoku.sourceforge.net/en/tech_ur.php#hr"),
-            new SolverTechnique(AvoidableRectangle, "https://hodoku.sourceforge.net/en/tech_ur.php#ar")
+            new SolverTechnique(AvoidableRectangle, "https://www.sudokuwiki.org/Avoidable_Rectangles")
         };
 
         public Puzzle Puzzle { get; }

@@ -81,8 +81,8 @@ namespace Kermalis.SudokuSolver.UI
             for (int x = 0; x < 9; x++)
             {
                 float xoff = w * x;
-                e.Graphics.DrawString(SPoint.ColumnLetter(x), fMini, Brushes.Black, xoff + w / 1.3f, 0);
-                e.Graphics.DrawString(SPoint.RowLetter(x), fMini, Brushes.Black, 0, h * x + h / 1.4f);
+                //e.Graphics.DrawString(SPoint.ColumnLetter(x), fMini, Brushes.Black, xoff + w / 1.3f, 0);
+                //e.Graphics.DrawString(SPoint.RowLetter(x), fMini, Brushes.Black, 0, h * x + h / 1.4f);
                 for (int y = 0; y < 9; y++)
                 {
                     float yoff = h * y;

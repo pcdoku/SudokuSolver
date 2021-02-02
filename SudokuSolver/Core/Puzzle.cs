@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Kermalis.SudokuSolver.Core
 {
-    internal sealed class Puzzle
+    public sealed class Puzzle
     {
         public readonly ReadOnlyCollection<Region> Rows;
         public readonly ReadOnlyCollection<Region> Columns;
@@ -166,28 +166,56 @@ namespace Kermalis.SudokuSolver.Core
 
             return new Puzzle(board, false);
         }
+
         public void Save(string fileName)
         {
             using (var file = new StreamWriter(fileName))
             {
-                for (int x = 0; x < 9; x++)
+                file.Write(this.ToString());
+            }
+        }
+
+        public override string ToString()
+        {
+            string result = "";
+            for (int x = 0; x < 9; x++)
+            {
+                for (int y = 0; y < 9; y++)
                 {
-                    string line = string.Empty;
-                    for (int y = 0; y < 9; y++)
+                    Cell cell = this[y, x];
+                    if (cell.OriginalValue == 0)
                     {
-                        Cell cell = this[y, x];
-                        if (cell.OriginalValue == 0)
-                        {
-                            line += '-';
-                        }
-                        else
-                        {
-                            line += cell.OriginalValue.ToString();
-                        }
+                        result += '-';
                     }
-                    file.WriteLine(line);
+                    else
+                    {
+                        result += cell.OriginalValue.ToString();
+                    }
+                }
+                result += '\n';
+            }
+            return result;
+        }
+
+        public string Solution()
+        {
+            string result = "";
+            for (int x = 0; x < 9; x++)
+            {
+                for (int y = 0; y < 9; y++)
+                {
+                    Cell cell = this[y, x];
+                    if (cell.Value == 0)
+                    {
+                        result += '-';
+                    }
+                    else
+                    {
+                        result += cell.Value.ToString();
+                    }
                 }
             }
+            return result;
         }
 
         public static string TechniqueFormat(string technique, string format, params object[] args)

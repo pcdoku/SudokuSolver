@@ -1,9 +1,65 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27428.2002
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuSolver", "SudokuSolver\SudokuSolver.csproj", "{C3556DE7-3124-4995-8BBB-FD9DFF460193}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Puzzles", "Puzzles", "{C3E3440C-49F5-45F5-AE79-9769F957921E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Regular", "Regular", "{4B45747A-C91F-4877-8805-EA5B74F6D1C9}"
+	ProjectSection(SolutionItems) = preProject
+		Puzzles\Regular\4109.txt = Puzzles\Regular\4109.txt
+		Puzzles\Regular\4112.txt = Puzzles\Regular\4112.txt
+		Puzzles\Regular\4319.txt = Puzzles\Regular\4319.txt
+		Puzzles\Regular\4322.txt = Puzzles\Regular\4322.txt
+		Puzzles\Regular\Unnamed 1.txt = Puzzles\Regular\Unnamed 1.txt
+		Puzzles\Regular\Unnamed 2.txt = Puzzles\Regular\Unnamed 2.txt
+		Puzzles\Regular\Unnamed 3.txt = Puzzles\Regular\Unnamed 3.txt
+		Puzzles\Regular\Unnamed 4.txt = Puzzles\Regular\Unnamed 4.txt
+		Puzzles\Regular\Unnamed 5.txt = Puzzles\Regular\Unnamed 5.txt
+		Puzzles\Regular\Unnamed 6.txt = Puzzles\Regular\Unnamed 6.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tough", "Tough", "{C93F9FE3-DAA7-4F91-9A66-723A8DA191E0}"
+	ProjectSection(SolutionItems) = preProject
+		Puzzles\Tough\116.txt = Puzzles\Tough\116.txt
+		Puzzles\Tough\117.txt = Puzzles\Tough\117.txt
+		Puzzles\Tough\Unsolved - s2.txt = Puzzles\Tough\Unsolved - s2.txt
+		Puzzles\Tough\Unsolved - s3.txt = Puzzles\Tough\Unsolved - s3.txt
+		Puzzles\Tough\Unsolved - Super Tough.txt = Puzzles\Tough\Unsolved - Super Tough.txt
+		Puzzles\Tough\Unsolved - Unnamed 7.txt = Puzzles\Tough\Unsolved - Unnamed 7.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Training", "Training", "{0F21009D-65CE-4B8E-B8C4-DAB4170A56A5}"
+	ProjectSection(SolutionItems) = preProject
+		Puzzles\Training\Avoidable Rectangle 1.txt = Puzzles\Training\Avoidable Rectangle 1.txt
+		Puzzles\Training\Avoidable Rectangle 2.txt = Puzzles\Training\Avoidable Rectangle 2.txt
+		Puzzles\Training\Hidden Quad.txt = Puzzles\Training\Hidden Quad.txt
+		Puzzles\Training\Hidden Rectangle (1).txt = Puzzles\Training\Hidden Rectangle (1).txt
+		Puzzles\Training\Hidden Rectangle.txt = Puzzles\Training\Hidden Rectangle.txt
+		Puzzles\Training\Hidden Triple.txt = Puzzles\Training\Hidden Triple.txt
+		Puzzles\Training\Jellyfish.txt = Puzzles\Training\Jellyfish.txt
+		Puzzles\Training\Naked Quad.txt = Puzzles\Training\Naked Quad.txt
+		Puzzles\Training\Naked Triple.txt = Puzzles\Training\Naked Triple.txt
+		Puzzles\Training\Pointing Tuples.txt = Puzzles\Training\Pointing Tuples.txt
+		Puzzles\Training\Unique Rectangle 1.txt = Puzzles\Training\Unique Rectangle 1.txt
+		Puzzles\Training\Unique Rectangle 2.txt = Puzzles\Training\Unique Rectangle 2.txt
+		Puzzles\Training\Unique Rectangle 4.txt = Puzzles\Training\Unique Rectangle 4.txt
+		Puzzles\Training\Unique Rectangle 5.txt = Puzzles\Training\Unique Rectangle 5.txt
+		Puzzles\Training\Unique Rectangle 6.txt = Puzzles\Training\Unique Rectangle 6.txt
+		Puzzles\Training\Unique Rectangle 7.txt = Puzzles\Training\Unique Rectangle 7.txt
+		Puzzles\Training\Unique Rectangle 8.txt = Puzzles\Training\Unique Rectangle 8.txt
+		Puzzles\Training\Unsolved - Hidden Rectangle (3).txt = Puzzles\Training\Unsolved - Hidden Rectangle (3).txt
+		Puzzles\Training\Unsolved - Sue-De-Coq.txt = Puzzles\Training\Unsolved - Sue-De-Coq.txt
+		Puzzles\Training\Unsolved - XYZ-Wing.txt = Puzzles\Training\Unsolved - XYZ-Wing.txt
+		Puzzles\Training\XY-Chain (3).txt = Puzzles\Training\XY-Chain (3).txt
+		Puzzles\Training\XY-Chain 1.txt = Puzzles\Training\XY-Chain 1.txt
+		Puzzles\Training\XY-Chain 2.txt = Puzzles\Training\XY-Chain 2.txt
+		Puzzles\Training\Y-Wing.txt = Puzzles\Training\Y-Wing.txt
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SudokuSolverTest", "SudokuSolverTest\SudokuSolverTest.csproj", "{9BFBF663-F42A-4663-9B07-015BFB296C36}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +71,18 @@ Global
 		{C3556DE7-3124-4995-8BBB-FD9DFF460193}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3556DE7-3124-4995-8BBB-FD9DFF460193}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3556DE7-3124-4995-8BBB-FD9DFF460193}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BFBF663-F42A-4663-9B07-015BFB296C36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BFBF663-F42A-4663-9B07-015BFB296C36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BFBF663-F42A-4663-9B07-015BFB296C36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BFBF663-F42A-4663-9B07-015BFB296C36}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4B45747A-C91F-4877-8805-EA5B74F6D1C9} = {C3E3440C-49F5-45F5-AE79-9769F957921E}
+		{C93F9FE3-DAA7-4F91-9A66-723A8DA191E0} = {C3E3440C-49F5-45F5-AE79-9769F957921E}
+		{0F21009D-65CE-4B8E-B8C4-DAB4170A56A5} = {C3E3440C-49F5-45F5-AE79-9769F957921E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {80455E13-5CFE-4045-BADA-AD2B435FC912}
