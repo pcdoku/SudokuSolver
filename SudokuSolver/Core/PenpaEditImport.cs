@@ -1,15 +1,10 @@
 ﻿// import code ported from https://github.com/swaroopg92/penpa-edit/blob/master/docs/js/general.js
 // which was forked from https://github.com/rjrudman/penpa-edit/blob/master/docs/js/general.js#L474
 // and in turn was forked from https://github.com/opt-pan/penpa-edit/blob/master/docs/js/general.js#L621 (original creator)
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO.Compression;
-using System.IO;
 using Newtonsoft.Json;
-using Ionic.Zlib;
+using System;
+using System.IO;
+using System.Linq;
 
 namespace SudokuSolver.Core
 {

@@ -23,20 +23,38 @@ namespace Kermalis.SudokuSolver.Core
 
         private static readonly SolverTechnique[] _techniques = new SolverTechnique[]
         {
+            // https://www.sudokuwiki.org/sudoku.htm order 
+            //   Hidden Singles
+            //   Naked Pairs/Triples
+            //   Hidden Pairs/Triples
+            //   Naked/Hidden Quads
+            //   Pointing Pairs
+            //   Box/Line Reduction
+            //   X-Wing
+            //   Simple colouring
+            //   Y-Wing
+            //   Swordfish
+            //   XYZ-Wing
+            //   ...
+            //   XY-CHain
+            //   ...
+            //   Jellyfish
+            //   Unique Rectangles
+
             new SolverTechnique(HiddenSingle, "Hidden single"),
             new SolverTechnique(NakedPair, "https://www.sudokuwiki.org/Naked_Candidates"),
-            new SolverTechnique(HiddenPair, "https://www.sudokuwiki.org/Hidden_Candidates"),
-            new SolverTechnique(LockedCandidate, "https://hodoku.sourceforge.net/en/tech_intersections.php#lc1"),
-            new SolverTechnique(PointingTuple, "https://hodoku.sourceforge.net/en/tech_intersections.php#lc1"),
             new SolverTechnique(NakedTriple, "https://www.sudokuwiki.org/Naked_Candidates"),
+            new SolverTechnique(HiddenPair, "https://www.sudokuwiki.org/Hidden_Candidates"),
             new SolverTechnique(HiddenTriple, "https://www.sudokuwiki.org/Hidden_Candidates"),
-            new SolverTechnique(XWing, "https://www.sudokuwiki.org/X_Wing_Strategy"),
-            new SolverTechnique(Swordfish, "https://www.sudokuwiki.org/Sword_Fish_Strategy"),
-            new SolverTechnique(YWing, "https://www.sudokuwiki.org/Y_Wing_Strategy"),
-            new SolverTechnique(XYZWing, "https://www.sudokuwiki.org/XYZ_Wing"),
-            new SolverTechnique(XYChain, "https://www.sudokuwiki.org/XY_Chains"),
             new SolverTechnique(NakedQuadruple, "https://www.sudokuwiki.org/Naked_Candidates"),
             new SolverTechnique(HiddenQuadruple, "https://www.sudokuwiki.org/Hidden_Candidates"),
+            new SolverTechnique(PointingTuple, "https://hodoku.sourceforge.net/en/tech_intersections.php#lc1"),
+            new SolverTechnique(LockedCandidate, "https://hodoku.sourceforge.net/en/tech_intersections.php#lc1"),
+            new SolverTechnique(XWing, "https://www.sudokuwiki.org/X_Wing_Strategy"),
+            new SolverTechnique(YWing, "https://www.sudokuwiki.org/Y_Wing_Strategy"),
+            new SolverTechnique(Swordfish, "https://www.sudokuwiki.org/Sword_Fish_Strategy"),
+            new SolverTechnique(XYZWing, "https://www.sudokuwiki.org/XYZ_Wing"),
+            new SolverTechnique(XYChain, "https://www.sudokuwiki.org/XY_Chains"),
             new SolverTechnique(Jellyfish, "https://www.sudokuwiki.org/Jelly_Fish_Strategy"),
             new SolverTechnique(UniqueRectangle, "https://www.sudokuwiki.org/Unique_Rectangles"),
             new SolverTechnique(HiddenRectangle, "https://hodoku.sourceforge.net/en/tech_ur.php#hr"),
