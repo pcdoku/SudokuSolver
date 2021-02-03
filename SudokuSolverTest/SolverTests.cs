@@ -26,7 +26,7 @@ namespace SudokuSolverTest
         public void TestSolverSolutions(string filename, string solution)
         {
             var puzzlesRoot = "../../../../Puzzles/";
-            var puzzle = Kermalis.SudokuSolver.Core.Puzzle.Load(puzzlesRoot+filename);
+            var puzzle = Kermalis.SudokuSolver.Core.Puzzle.LoadFile(puzzlesRoot+filename);
             var solver = new Kermalis.SudokuSolver.Core.Solver(puzzle);
             var args = new DoWorkEventArgs(null);
             solver.DoWork(this, args);
@@ -55,7 +55,7 @@ namespace SudokuSolverTest
         public void TestSolverStrategies(string filename, string solution, int actionIndex = -1, string action = null)
         {
             var puzzlesRoot = "../../../../Puzzles/";
-            var puzzle = Kermalis.SudokuSolver.Core.Puzzle.Load(puzzlesRoot + filename);
+            var puzzle = Kermalis.SudokuSolver.Core.Puzzle.LoadFile(puzzlesRoot + filename);
             var solver = new Kermalis.SudokuSolver.Core.Solver(puzzle);
             var args = new DoWorkEventArgs(null);
             solver.DoWork(this, args);

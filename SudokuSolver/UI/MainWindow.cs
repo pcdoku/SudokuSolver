@@ -62,7 +62,7 @@ namespace Kermalis.SudokuSolver.UI
                 Puzzle puzzle;
                 try
                 {
-                    puzzle = Puzzle.Load(d.FileName);
+                    puzzle = Puzzle.LoadFile(d.FileName);
                 }
                 catch (InvalidDataException)
                 {

@@ -140,14 +140,44 @@ namespace Kermalis.SudokuSolver.Core
             }
         }
 
-        public static Puzzle Load(string fileName)
+        /// <summary>
+        /// Load a puzzle form a file, automatically detecting one of the following formats:
+        /// a) 1 row of 81 values
+        /// b) 9 rows of 9 values
+        /// The positions without a 1-9 digit value can be represented by 0 or any non-digit symbol.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static Puzzle LoadFile(string fileName)
         {
-            string[] fileLines = File.ReadAllLines(fileName);
+            var fileLines = File.ReadAllText(fileName);
+            return Load(fileLines);
+        }
+
+        public static Puzzle Load(string puzzledata)
+        {
+            var fileLines = puzzledata.Split(new[] {"\r\n", "\r", "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
+            int[][] board = Utils.CreateJaggedArray<int[][]>(9, 9);
+            if (fileLines.Length == 1)
+            {
+                string line = fileLines[0];
+                // the whole puzzle in 1 line
+                for (int i = 0; i < 9; i++)
+                {
+                    for (int j = 0; j < 9; j++)
+                    {
+                        if (int.TryParse(line[j+i*9].ToString(), out int value)) // Anything can represent 0
+                        {
+                            board[j][i] = value;
+                        }
+                    }                    
+                }
+                return new Puzzle(board, false);
+            }
             if (fileLines.Length != 9)
             {
-                throw new InvalidDataException("Puzzle must have 9 rows.");
+                throw new InvalidDataException("Puzzle must have 1 row of 81 values or 9 rows of 9 values.");
             }
-            int[][] board = Utils.CreateJaggedArray<int[][]>(9, 9);
             for (int i = 0; i < 9; i++)
             {
                 string line = fileLines[i];
