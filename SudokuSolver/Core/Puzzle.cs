@@ -3,9 +3,19 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace Kermalis.SudokuSolver.Core
 {
+    public class Constraint
+    {
+        public string type;
+    }
+    public class PuzzleDefinition
+    {
+        public List<Constraint> constraints;
+        public List<List<int>> givenDigits;
+    }
     public sealed class Puzzle
     {
         public readonly ReadOnlyCollection<Region> Rows;
@@ -16,12 +26,14 @@ namespace Kermalis.SudokuSolver.Core
         public readonly BindingList<string> Actions = new BindingList<string>();
         public readonly bool IsCustom;
         private readonly Cell[][] _board;
+        public readonly List<string> Constraints;
 
         public Cell this[int x, int y] => _board[x][y];
 
-        public Puzzle(int[][] board, bool isCustom)
+        public Puzzle(int[][] board, bool isCustom, List<string> constraints = null)
         {
             IsCustom = isCustom;
+            Constraints = constraints ?? new List<string>();
             _board = Utils.CreateJaggedArray<Cell[][]>(9, 9);
             for (int x = 0; x < 9; x++)
             {
@@ -151,7 +163,32 @@ namespace Kermalis.SudokuSolver.Core
         public static Puzzle LoadFile(string fileName)
         {
             var fileLines = File.ReadAllText(fileName);
+            if (fileLines[0] == '{')
+            {
+                return LoadJson(fileLines);
+            }
             return Load(fileLines);
+        }
+
+        /// <summary>
+        /// This loads a simplified form of the ipuz.org format since
+        /// we don't expect interoperability due to our custom variations.
+        /// This omits the namespaces used in ipuz.org.
+        /// </summary>
+        /// <param name="puzzlejson"></param>
+        /// <returns></returns>
+        public static Puzzle LoadJson(string puzzlejson)
+        {
+            var puzzledata = JsonConvert.DeserializeObject<PuzzleDefinition>(puzzlejson);
+            int[][] board = Utils.CreateJaggedArray<int[][]>(9, 9);
+            for (int row = 0; row < 9; row++)
+            {
+                for (int col = 0; col < 9; col++)
+                {
+                    board[col][row] = puzzledata.givenDigits[row][col];  // some day fix this so board indices are row,col                  
+                }
+            }
+            return new Puzzle(board, false, puzzledata.constraints.Select(x => x.type).ToList());
         }
 
         public static Puzzle Load(string puzzledata)

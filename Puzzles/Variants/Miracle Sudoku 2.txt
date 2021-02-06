@@ -1,0 +1,22 @@
+{
+	"title":"A New Miracle Sudoku",
+	"source": {
+		"author":"Aad van de Wetering"
+	},
+	"solver":"https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqbVRwOGNMY0FPZDdpbElkUkpxSGdQd1B4dW5MZ3xBQ3Jtc0tuOVFTa19paE9XT3J6cFl5X21ucVFMaUtzU19XSW90UjlzRlRRMDZjV1BjZy1PRUpFSDY4M1FhUUdhSWp6TXRNMlVBNFVlVE5tTW5mWWRSeE11RVVKQzctTm84ak0yaE53Ykt5cnlZSGVTWWJlc3g3TQ&q=https%3A%2F%2Fcracking-the-cryptic.web.app%2Fsudoku%2F897LqtfTQD",
+    "constraints": [ 
+		{ "type": "nonconsecutive" },
+		{ "type": "antiknight" },
+		{ "type": "antiking" }	],
+    "givenDigits": [ 
+		[ 0,0,0,0,0,0,0,0,0 ], 
+		[ 0,0,0,0,0,0,0,0,0 ],
+		[ 0,0,0,0,4,0,0,0,0 ],
+		[ 0,0,3,0,0,0,0,0,0 ],
+		[ 0,0,0,0,0,0,0,0,0 ],
+		[ 0,0,0,0,0,0,0,0,0 ],
+		[ 0,0,0,0,0,0,0,0,0 ],
+		[ 0,0,0,0,0,0,0,0,0 ],
+		[ 0,0,0,0,0,0,0,0,0 ] ]
+}
+
