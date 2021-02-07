@@ -99,7 +99,7 @@ namespace Kermalis.SudokuSolver.Core
                             int[] a = cell.Candidates.ToArray(); // Copy
                             if (a.Length == 1)
                             {
-                                cell.Set(a[0]);
+                                Puzzle.Set(cell, a[0]);
                                 Puzzle.LogAction(Puzzle.TechniqueFormat("Naked single", "{0}: {1}", cell, a[0]), cell, (Cell)null);
                                 changed = true;
                             }
@@ -287,7 +287,7 @@ namespace Kermalis.SudokuSolver.Core
                     // TODO: throw new Exception("invalid puzzle, nonconsecutive constraint"); 
                     puzzle.LogAction(Puzzle.TechniqueFormat("Consecutive Digits ", "{0}: {1}", cell2.ToString(), cell2.Candidates.Print(), cell2, (Cell)null));
                     var cell = cell1.OriginalValue == 0 ? cell1 : cell2;
-                    cell.Set(0);
+                    puzzle.Set(cell, 0);
                     cell.Candidates.Clear();
                     return true;
                 }
@@ -469,7 +469,7 @@ namespace Kermalis.SudokuSolver.Core
                                                 Cell cell = notSet.ElementAt(0);
                                                 if (cell.Candidates.Count == 2)
                                                 {
-                                                    cell.Set(cell.Candidates.Except(candidates).ElementAt(0));
+                                                        puzzle.Set(cell, cell.Candidates.Except(candidates).ElementAt(0));
                                                 }
                                                 else
                                                 {
@@ -482,7 +482,7 @@ namespace Kermalis.SudokuSolver.Core
                                             {
                                                 IEnumerable<int> commonCandidates = notSet.Select(c => c.Candidates.Except(candidates)).IntersectAll();
                                                 if (commonCandidates.Any()
-                                                    && puzzle.ChangeCandidates(notSet.Select(c => c.GetCellsVisible()).IntersectAll(), commonCandidates))
+                                                    && puzzle.ChangeCandidates(notSet.Select(c => puzzle.GetCellsVisibleClassicSudoku(c)).IntersectAll(), commonCandidates))
                                                 {
                                                     changed = true;
                                                 }
@@ -548,7 +548,7 @@ namespace Kermalis.SudokuSolver.Core
                                                 Cell diag = puzzle[eks, why];
                                                 if (diag.Candidates.Count == 2)
                                                 {
-                                                    diag.Set(i);
+                                                    puzzle.Set(diag, i);
                                                 }
                                                 else
                                                 {
@@ -652,7 +652,7 @@ namespace Kermalis.SudokuSolver.Core
                                             {
                                                 if (gtTwo[0].Candidates.Count == 3)
                                                 {
-                                                    gtTwo[0].Set(gtTwo[0].Candidates.Single(c => !candidates.Contains(c)));
+                                                    puzzle.Set(gtTwo[0], gtTwo[0].Candidates.Single(c => !candidates.Contains(c)));
                                                 }
                                                 else
                                                 {
@@ -666,7 +666,7 @@ namespace Kermalis.SudokuSolver.Core
                                                 {
                                                     continue;
                                                 }
-                                                if (!puzzle.ChangeCandidates(three[0].GetCellsVisible().Intersect(three[1].GetCellsVisible()), three[0].Candidates.Except(candidates)))
+                                                if (!puzzle.ChangeCandidates(puzzle.GetCellsVisibleClassicSudoku(three[0]).Intersect(puzzle.GetCellsVisibleClassicSudoku(three[1])), three[0].Candidates.Except(candidates)))
                                                 {
                                                     continue;
                                                 }
@@ -690,7 +690,7 @@ namespace Kermalis.SudokuSolver.Core
                                                 {
                                                     continue;
                                                 }
-                                                if (!puzzle.ChangeCandidates(nSubset.Union(gtTwo).Select(c => c.GetCellsVisible()).IntersectAll(), others))
+                                                if (!puzzle.ChangeCandidates(nSubset.Union(gtTwo).Select(c => puzzle.GetCellsVisibleClassicSudoku(c)).IntersectAll(), others))
                                                 {
                                                     continue;
                                                 }
@@ -748,7 +748,7 @@ namespace Kermalis.SudokuSolver.Core
                                                 {
                                                     continue;
                                                 }
-                                                if (!puzzle.ChangeCandidates(three.Select(c => c.GetCellsVisible()).IntersectAll(), three[0].Candidates.Except(candidates)))
+                                                if (!puzzle.ChangeCandidates(three.Select(c => puzzle.GetCellsVisibleClassicSudoku(c)).IntersectAll(), three[0].Candidates.Except(candidates)))
                                                 {
                                                     continue;
                                                 }
@@ -777,8 +777,8 @@ namespace Kermalis.SudokuSolver.Core
                                                 {
                                                     continue;
                                                 }
-                                                two[0].Set(set);
-                                                two[1].Set(set);
+                                                puzzle.Set(two[0], set);
+                                                puzzle.Set(two[1], set);
                                                 break;
                                             }
                                         }
@@ -800,7 +800,7 @@ namespace Kermalis.SudokuSolver.Core
             bool Recursion(Cell startCell, List<Cell> ignore, Cell currentCell, int theOneThatWillEndItAllBaybee, int mustFind)
             {
                 ignore.Add(currentCell);
-                IEnumerable<Cell> visible = currentCell.GetCellsVisible().Except(ignore);
+                IEnumerable<Cell> visible = puzzle.GetCellsVisibleClassicSudoku(currentCell).Except(ignore);
                 foreach (Cell cell in visible)
                 {
                     if (cell.Candidates.Count != 2)
@@ -815,7 +815,7 @@ namespace Kermalis.SudokuSolver.Core
                     // Check end condition
                     if (otherCandidate == theOneThatWillEndItAllBaybee && startCell != currentCell)
                     {
-                        Cell[] commonVisibleWithStartCell = cell.GetCellsVisible().Intersect(startCell.GetCellsVisible()).ToArray();
+                        Cell[] commonVisibleWithStartCell = puzzle.GetCellsVisibleClassicSudoku(cell).Intersect(puzzle.GetCellsVisibleClassicSudoku(startCell)).ToArray();
                         if (commonVisibleWithStartCell.Length > 0)
                         {
                             IEnumerable<Cell> commonWithEndingCandidate = commonVisibleWithStartCell.Where(c => c.Candidates.Contains(theOneThatWillEndItAllBaybee));
@@ -881,13 +881,13 @@ namespace Kermalis.SudokuSolver.Core
                                     continue;
                                 }
 
-                                IEnumerable<Cell> c3Sees = c3.GetCellsVisible().Except(region)
+                                IEnumerable<Cell> c3Sees = puzzle.GetCellsVisibleClassicSudoku(c3).Except(region)
                                     .Where(c => c.Candidates.Count == 2 // If it has 2 candidates
                                     && c.Candidates.Intersect(c3.Candidates).Count() == 2 // Shares them both with p3
                                     && c.Candidates.Intersect(c3.Candidates).Count() == 1); // And shares one with p2
                                 foreach (Cell c2_2 in c3Sees)
                                 {
-                                    IEnumerable<Cell> allSee = c2.GetCellsVisible().Intersect(c3.GetCellsVisible()).Intersect(c2_2.GetCellsVisible());
+                                    IEnumerable<Cell> allSee = puzzle.GetCellsVisibleClassicSudoku(c2).Intersect(puzzle.GetCellsVisibleClassicSudoku(c3)).Intersect(puzzle.GetCellsVisibleClassicSudoku(c2_2));
                                     int allHave = c2.Candidates.Intersect(c3.Candidates).Intersect(c2_2.Candidates).Single(); // Will be 1 Length
                                     if (puzzle.ChangeCandidates(allSee, allHave))
                                     {
@@ -937,12 +937,12 @@ namespace Kermalis.SudokuSolver.Core
                                 var a = new Cell[] { c1, c2 };
                                 foreach (Cell cell in a)
                                 {
-                                    IEnumerable<Cell> c3a = cell.GetCellsVisible().Except(cells).Where(c => c.Candidates.Count == 2 && c.Candidates.Intersect(new int[] { other1, other2 }).Count() == 2);
+                                    IEnumerable<Cell> c3a = puzzle.GetCellsVisibleClassicSudoku(cell).Except(cells).Where(c => c.Candidates.Count == 2 && c.Candidates.Intersect(new int[] { other1, other2 }).Count() == 2);
                                     if (c3a.Count() == 1) // Example: p1 and p3 see each other, so remove similarities from p2 and p3
                                     {
                                         Cell c3 = c3a.ElementAt(0);
                                         Cell cOther = a.Single(c => c != cell);
-                                        IEnumerable<Cell> commonCells = cOther.GetCellsVisible().Intersect(c3.GetCellsVisible());
+                                        IEnumerable<Cell> commonCells = puzzle.GetCellsVisibleClassicSudoku(cOther).Intersect(puzzle.GetCellsVisibleClassicSudoku(c3));
                                         int candidate = cOther.Candidates.Intersect(c3.Candidates).Single(); // Will just be 1 candidate
                                         if (puzzle.ChangeCandidates(commonCells, candidate))
                                         {
@@ -1203,16 +1203,16 @@ namespace Kermalis.SudokuSolver.Core
         private static bool HiddenSingle(Puzzle puzzle)
         {
             bool changed = false;
-            for (int i = 0; i < 9; i++)
+            foreach (ReadOnlyCollection<Region> regionCollection in puzzle.Regions)
             {
-                foreach (ReadOnlyCollection<Region> region in puzzle.Regions)
+                foreach (var region in regionCollection)
                 {
                     for (int candidate = 1; candidate <= 9; candidate++)
                     {
-                        Cell[] c = region[i].GetCellsWithCandidate(candidate).ToArray();
+                        Cell[] c = region.GetCellsWithCandidate(candidate).ToArray();
                         if (c.Length == 1)
                         {
-                            c[0].Set(candidate);
+                            puzzle.Set(c[0], candidate);
                             puzzle.LogAction(Puzzle.TechniqueFormat("Hidden single", "{0}: {1}", c[0], candidate), c[0], (Cell)null);
                             changed = true;
                         }
@@ -1340,7 +1340,7 @@ namespace Kermalis.SudokuSolver.Core
                     IEnumerable<int> combo = cells.Select(c => c.Candidates).UniteAll();
                     if (combo.Count() == amount)
                     {
-                        if (puzzle.ChangeCandidates(indexes.Select(i => region[i].GetCellsVisible()).IntersectAll(), combo))
+                        if (puzzle.ChangeCandidates(indexes.Select(i => puzzle.GetCellsVisibleClassicSudoku(region[i])).IntersectAll(), combo))
                         {
                             puzzle.LogAction(Puzzle.TechniqueFormat("Naked " + _tupleStr[amount], "{0}: {1}", cells.Print(), combo.Print()), cells, (Cell)null);
                             return true;

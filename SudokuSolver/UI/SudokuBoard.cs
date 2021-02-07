@@ -179,7 +179,7 @@ namespace Kermalis.SudokuSolver.UI
 
             if (e != null && ((e.KeyChar == '0' && _selectedCell.Value != 0) || (e.KeyChar > '0' && e.KeyChar <= '9')))
             {
-                _selectedCell.ChangeOriginalValue(e.KeyChar - '0');
+                _puzzle.ChangeOriginalValue(_selectedCell, e.KeyChar - '0');
                 _puzzle.LogAction(Puzzle.TechniqueFormat("Changed cell", _selectedCell.ToString()), _selectedCell, (Cell)null);
                 CellChanged?.Invoke(_selectedCell);
             }

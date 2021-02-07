@@ -25,7 +25,7 @@ namespace Kermalis.SudokuSolver.Core
 
         public readonly BindingList<string> Actions = new BindingList<string>();
         public readonly bool IsCustom;
-        private readonly Cell[][] _board;
+        private readonly Cell[][] _board; // col, row
         public readonly List<string> Constraints;
 
         public Cell this[int x, int y] => _board[x][y];
@@ -39,7 +39,7 @@ namespace Kermalis.SudokuSolver.Core
             {
                 for (int y = 0; y < 9; y++)
                 {
-                    _board[x][y] = new Cell(this, board[x][y], new SPoint(x, y));
+                    _board[x][y] = new Cell(board[x][y], new SPoint(x, y));
                 }
             }
             Region[] rows = new Region[9],
@@ -75,12 +75,30 @@ namespace Kermalis.SudokuSolver.Core
                 }
                 blocks[i] = new Region(cells);
             }
-            Regions = new ReadOnlyCollection<ReadOnlyCollection<Region>>(new ReadOnlyCollection<Region>[]
+            Rows = new ReadOnlyCollection<Region>(rows);
+            Columns = new ReadOnlyCollection<Region>(columns);
+            Blocks = new ReadOnlyCollection<Region>(blocks);
+            var regionList = new List<ReadOnlyCollection<Region>>();
+            regionList.Add(Rows);
+            regionList.Add(Columns);
+            regionList.Add(Blocks);
+            if (Constraints.Contains("x-sudoku"))
             {
-                Rows = new ReadOnlyCollection<Region>(rows),
-                Columns = new ReadOnlyCollection<Region>(columns),
-                Blocks = new ReadOnlyCollection<Region>(blocks)
-            });
+                regionList.Add(new ReadOnlyCollection<Region>(GetDiagonalRegions()));
+            }
+            Regions = new ReadOnlyCollection<ReadOnlyCollection<Region>>(regionList);
+        }
+
+        public ReadOnlyCollection<Region> GetDiagonalRegions()
+        {
+            var diagonal1 = new List<Cell>();
+            var diagonal2 = new List<Cell>();
+            for (int n = 0; n < 9; n++)
+            {
+                diagonal1.Add(_board[n][n]);
+                diagonal2.Add(_board[8 - n][n]);
+            }
+            return new ReadOnlyCollection<Region>(new List<Region>() { new Region(diagonal1.ToArray()), new Region(diagonal2.ToArray()) });
         }
 
         public bool ChangeCandidates(Cell cell, int candidate, bool remove = true)
@@ -146,14 +164,59 @@ namespace Kermalis.SudokuSolver.Core
                     Cell cell = this[x, y];
                     if (cell.Value != 0)
                     {
-                        cell.Set(cell.Value);
+                        Set(cell, cell.Value);
                     }
                 }
             }
         }
 
+        public void Set(Cell cell, int newValue, bool refreshOtherCellCandidates = false)
+        {
+            int oldValue = cell.Value;
+            cell.Set(newValue);
+            if (newValue == 0)
+            {
+                foreach (int i in Utils.OneToNine)
+                {
+                    cell.Candidates.Add(i);
+                }
+                ChangeCandidates(GetCellsVisibleForAllRegions(cell), oldValue, remove: false);
+            }
+            else
+            {
+                cell.Candidates.Clear();
+                ChangeCandidates(GetCellsVisibleForAllRegions(cell), newValue);
+            }
+            if (refreshOtherCellCandidates)
+            {
+                RefreshCandidates();
+            }
+
+        }
+
+        public void ChangeOriginalValue(Cell cell, int value)
+        {
+            cell.OriginalValue = value;
+            Set(cell, value, refreshOtherCellCandidates: true);
+        }
+
+        public IEnumerable<Cell> GetCellsVisibleForAllRegions(Cell cell)
+        {
+            var regionsContainingCell = Regions.SelectMany(x => x).Where(r => r.Contains(cell));
+            var visibleCells = regionsContainingCell.SelectMany(x => x).Distinct().Where(c => c != cell);
+            return visibleCells;
+        }
+
+        public IEnumerable<Cell> GetCellsVisibleClassicSudoku(Cell cell)
+        {
+            Region block = Blocks[cell.Point.BlockIndex];
+            Region col = Columns[cell.Point.X];
+            Region row = Rows[cell.Point.Y];
+            return block.Union(col).Union(row).Except(new Cell[] { cell });
+        }
+
         /// <summary>
-        /// Load a puzzle form a file, automatically detecting one of the following formats:
+        /// Load a puzzle from a file, automatically detecting one of the following formats:
         /// a) 1 row of 81 values
         /// b) 9 rows of 9 values
         /// The positions without a 1-9 digit value can be represented by 0 or any non-digit symbol.
@@ -191,7 +254,7 @@ namespace Kermalis.SudokuSolver.Core
             return new Puzzle(board, false, puzzledata.constraints.Select(x => x.type).ToList());
         }
 
-        public static Puzzle Load(string puzzledata)
+        public static Puzzle Load(string puzzledata, List<string> constraints = null)
         {
             var fileLines = puzzledata.Split(new[] {"\r\n", "\r", "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
             int[][] board = Utils.CreateJaggedArray<int[][]>(9, 9);
@@ -209,7 +272,7 @@ namespace Kermalis.SudokuSolver.Core
                         }
                     }                    
                 }
-                return new Puzzle(board, false);
+                return new Puzzle(board, false, constraints);
             }
             if (fileLines.Length != 9)
             {
@@ -231,7 +294,7 @@ namespace Kermalis.SudokuSolver.Core
                 }
             }
 
-            return new Puzzle(board, false);
+            return new Puzzle(board, false, constraints);
         }
 
         public void Save(string fileName)

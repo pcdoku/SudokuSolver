@@ -67,5 +67,32 @@ namespace SudokuSolverTest
             }
         }
 
+        [Theory]
+        [InlineData("Naked horizontally adjacent Triple where 2 of the digits are consecutive places the 3rd digit between them.",
+            "684000735000000000000000000000000000000000000000000000000000000000000000000000000", 
+            new string[] {
+                "Tuple of 1s with adjacent consecutive candidate ( R1C5 ): ( 2 )", 
+                "Tuple of 2s with adjacent consecutive candidate ( R1C5 ): ( 1 )",
+                "Naked single        R1C5: 9"
+            })]
+        [InlineData("Naked L shaped Triple in a box where 2 of the digits are consecutive places the 3rd digit between them.",
+            "006000000000000000000003000000000000000000000300000000000000000000000000000000000", 
+            new string[] {
+                "Tuple of 3s with adjacent consecutive candidate ( R2C2 ): ( 2, 4 )"
+            })]
+#pragma warning disable xUnit1026 // Theory methods should use all of their parameters
+        public void TestNonConsecutiveStrategies(string description, string givendigits, string[] messages)
+#pragma warning restore xUnit1026 // Theory methods should use all of their parameters
+        {
+            var puzzle = Kermalis.SudokuSolver.Core.Puzzle.Load(givendigits, new List<string>() { "nonconsecutive" });
+            var solver = new Kermalis.SudokuSolver.Core.Solver(puzzle);
+            var args = new DoWorkEventArgs(null);
+            solver.DoWork(this, args);
+            Assert.False((bool)args.Result);  // purposely incomplete puzzle for forcing a certain strategy to be used
+            foreach (var msg in messages)
+            {
+                Assert.Contains(msg, puzzle.Actions);
+            }
+        }
     }
 }

@@ -106,7 +106,7 @@ namespace Kermalis.SudokuSolver.UI
                     {
                         if (_solver.Puzzle[x, y].Value != _solver.Puzzle[x, y].OriginalValue)
                         {
-                            _solver.Puzzle[x, y].Set(0);
+                            _solver.Puzzle.Set(_solver.Puzzle[x, y], 0);
                         }
                     }
                 }

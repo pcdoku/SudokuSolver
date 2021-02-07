@@ -10,9 +10,9 @@
     <StartupObject>Kermalis.SudokuSolver.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Update="UI\SudokuBoard.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+	  <Compile Update="UI\SudokuBoard.cs">
+		  <SubType>UserControl</SubType>
+	  </Compile>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DotNetZip">
@@ -20,7 +20,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="NETStandard.Library">
-      <Version>1.6.0</Version>
+      <Version>2.0.3</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
