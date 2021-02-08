@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Xunit;
-using SudokuSolver;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
+using Xunit;
 
 namespace SudokuSolverTest
 {
@@ -26,8 +23,8 @@ namespace SudokuSolverTest
         public void TestSolverSolutions(string filename, string solution)
         {
             var puzzlesRoot = "../../../../Puzzles/";
-            var puzzle = Kermalis.SudokuSolver.Core.Puzzle.LoadFile(puzzlesRoot+filename);
-            var solver = new Kermalis.SudokuSolver.Core.Solver(puzzle);
+            var puzzle = SudokuSolver.Core.Puzzle.LoadFile(puzzlesRoot+filename);
+            var solver = new SudokuSolver.Core.Solver(puzzle);
             var args = new DoWorkEventArgs(null);
             solver.DoWork(this, args);
             Assert.True((bool)args.Result);
@@ -55,8 +52,8 @@ namespace SudokuSolverTest
         public void TestSolverStrategies(string filename, string solution, int actionIndex = -1, string action = null)
         {
             var puzzlesRoot = "../../../../Puzzles/";
-            var puzzle = Kermalis.SudokuSolver.Core.Puzzle.LoadFile(puzzlesRoot + filename);
-            var solver = new Kermalis.SudokuSolver.Core.Solver(puzzle);
+            var puzzle = SudokuSolver.Core.Puzzle.LoadFile(puzzlesRoot + filename);
+            var solver = new SudokuSolver.Core.Solver(puzzle);
             var args = new DoWorkEventArgs(null);
             solver.DoWork(this, args);
             Assert.True((bool)args.Result);
@@ -84,8 +81,8 @@ namespace SudokuSolverTest
         public void TestNonConsecutiveStrategies(string description, string givendigits, string[] messages)
 #pragma warning restore xUnit1026 // Theory methods should use all of their parameters
         {
-            var puzzle = Kermalis.SudokuSolver.Core.Puzzle.Load(givendigits, new List<string>() { "nonconsecutive" });
-            var solver = new Kermalis.SudokuSolver.Core.Solver(puzzle);
+            var puzzle = SudokuSolver.Core.Puzzle.Load(givendigits, new List<string>() { "nonconsecutive" });
+            var solver = new SudokuSolver.Core.Solver(puzzle);
             var args = new DoWorkEventArgs(null);
             solver.DoWork(this, args);
             Assert.False((bool)args.Result);  // purposely incomplete puzzle for forcing a certain strategy to be used

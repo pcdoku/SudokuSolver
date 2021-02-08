@@ -1,4 +1,4 @@
-﻿using Kermalis.SudokuSolver.Core;
+﻿using SudokuSolver.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

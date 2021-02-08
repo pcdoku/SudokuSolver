@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
 
-namespace Kermalis.SudokuSolver.Core
+namespace SudokuSolver.Core
 {
     public class Constraint
     {

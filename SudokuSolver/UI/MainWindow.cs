@@ -1,9 +1,10 @@
-﻿using Kermalis.SudokuSolver.Core;
+﻿using SudokuSolver.Core;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
+using SudokuSolver.UI;
 
 namespace Kermalis.SudokuSolver.UI
 {
@@ -131,6 +132,38 @@ namespace Kermalis.SudokuSolver.UI
         private void Exit(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void _fileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void _importFPuzzlesStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            var dialog = new ImportDialog();
+            dialog.ShowDialog();
+            if (dialog.DialogResult == DialogResult.OK)
+            {
+                Puzzle puzzle;
+                try
+                {
+                    puzzle = FPuzzleImport.Import(dialog.urlTextBox.Text);
+                }
+                catch (InvalidDataException)
+                {
+                    MessageBox.Show("Invalid puzzle data.");
+                    return;
+                }
+                catch
+                {
+                    MessageBox.Show("Error loading puzzle.");
+                    return;
+                }
+                _solver = new Solver(puzzle);
+                ChangePuzzle("", true);
+
+            }
         }
     }
 }

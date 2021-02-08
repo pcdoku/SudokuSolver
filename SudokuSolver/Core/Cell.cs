@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Kermalis.SudokuSolver.Core
+namespace SudokuSolver.Core
 {
     public sealed class CellSnapshot
     {

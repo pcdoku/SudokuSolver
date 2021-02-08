@@ -5,8 +5,6 @@ Because it logs the human techniques it uses, you can learn how to get past obst
 
 ![Preview](https://i.imgur.com/ERLFyc6.gif)
 
-It is designed with speed in mind, but there are still many improvements to be had. I'm currently just trying to write each technique before optimizing further.
-
 The form draws the puzzle and its changes. If it gets stuck, the candidates for each cell will be shown for debugging:
 
 ![Failure Preview](https://i.imgur.com/WE7UMun.png)
@@ -15,6 +13,12 @@ Once design is done, of course, there will be no candidates showing, as every ce
 
 Big thanks to http://hodoku.sourceforge.net and http://www.sudokuwiki.org for providing a lot of information on tough Sudoku techniques.
 
-## To Do
+## Changes from the original program from Kermalis
 
-* A way to toggle techniques and logging with the UI
+* switched to RnCn coodinate notation
+* added unit tests
+* support loading puzzles from a string of 81 digits (like used by sudokuwiki.org, and others)
+* support loading puzzles from json file to allow other variants to be described
+* added strategies for solving nonconsecutive, antiknight, antiking, and x-sudoku
+* much refactoring, updating to .NET 5.0
+* added ability to import from f-puzzles URL
