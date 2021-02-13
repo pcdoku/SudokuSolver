@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using SudokuSolver.Core.Constraints;
 
 namespace SudokuSolver.Core
 {
@@ -26,14 +27,14 @@ namespace SudokuSolver.Core
         public readonly BindingList<string> Actions = new BindingList<string>();
         public readonly bool IsCustom;
         private readonly Cell[][] _board; // col, row
-        public readonly List<string> Constraints;
+        public readonly List<BaseConstraint> Constraints;
 
         public Cell this[int x, int y] => _board[x][y];
 
-        public Puzzle(int[][] board, bool isCustom, List<string> constraints = null)
+        public Puzzle(int[][] board, bool isCustom, List<BaseConstraint> constraints = null)
         {
             IsCustom = isCustom;
-            Constraints = constraints ?? new List<string>();
+            Constraints = constraints ?? new List<BaseConstraint>();
             _board = Utils.CreateJaggedArray<Cell[][]>(9, 9);
             for (int x = 0; x < 9; x++)
             {
@@ -82,23 +83,11 @@ namespace SudokuSolver.Core
             regionList.Add(Rows);
             regionList.Add(Columns);
             regionList.Add(Blocks);
-            if (Constraints.Contains("x-sudoku"))
+            foreach( var constraint in Constraints)
             {
-                regionList.Add(new ReadOnlyCollection<Region>(GetDiagonalRegions()));
+                regionList.Add(new ReadOnlyCollection<Region>(constraint.GetRegions(this)));
             }
             Regions = new ReadOnlyCollection<ReadOnlyCollection<Region>>(regionList);
-        }
-
-        public ReadOnlyCollection<Region> GetDiagonalRegions()
-        {
-            var diagonal1 = new List<Cell>();
-            var diagonal2 = new List<Cell>();
-            for (int n = 0; n < 9; n++)
-            {
-                diagonal1.Add(_board[n][n]);
-                diagonal2.Add(_board[8 - n][n]);
-            }
-            return new ReadOnlyCollection<Region>(new List<Region>() { new Region(diagonal1.ToArray()), new Region(diagonal2.ToArray()) });
         }
 
         public bool ChangeCandidates(Cell cell, int candidate, bool remove = true)
@@ -251,10 +240,24 @@ namespace SudokuSolver.Core
                     board[col][row] = puzzledata.givenDigits[row][col];  // some day fix this so board indices are row,col                  
                 }
             }
-            return new Puzzle(board, false, puzzledata.constraints.Select(x => x.type).ToList());
+            return new Puzzle(board, false, puzzledata.constraints.Select(x => CreateConstraint(x)).ToList());
         }
 
-        public static Puzzle Load(string puzzledata, List<string> constraints = null)
+        private static BaseConstraint CreateConstraint(Constraint constraint)
+        {
+            if (constraint.type == "x-sudoku")
+                return new XSudokuConstraint();
+            if (constraint.type == "nonconsecutive")
+                return new NonconsecutiveConstraint();
+            if (constraint.type == "antiknight")
+                return new AntiKnightConstraint();
+            if (constraint.type == "antiking")
+                return new AntiKingConstraint();
+            return null;
+        }
+
+
+        public static Puzzle Load(string puzzledata, List<BaseConstraint> constraints = null)
         {
             var fileLines = puzzledata.Split(new[] {"\r\n", "\r", "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
             int[][] board = Utils.CreateJaggedArray<int[][]>(9, 9);

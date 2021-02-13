@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
+using SudokuSolver.Core.Constraints;
 
 namespace SudokuSolverTest
 {
@@ -22,9 +23,10 @@ namespace SudokuSolverTest
         public void TestGetCellsVisibleForAllRegionsXSudoku()
         {
             int[][] board = Utils.CreateJaggedArray<int[][]>(9, 9);
-            var puzzle = new Puzzle(board, false, new List<string>() { "x-sudoku" });
+            var xSudokuConstraint = new XSudokuConstraint();
+            var puzzle = new Puzzle(board, false, new List<BaseConstraint>() { xSudokuConstraint });
             var targetCell = puzzle[4, 4]; // in the middle of the X
-            var expectedVisible = new HashSet<Cell>(puzzle.Rows[4].Union(puzzle.Columns[4]).Union(puzzle.Blocks[4]).Union(puzzle.GetDiagonalRegions().SelectMany(x => x)).Distinct().Except(new Cell[] { targetCell }));
+            var expectedVisible = new HashSet<Cell>(puzzle.Rows[4].Union(puzzle.Columns[4]).Union(puzzle.Blocks[4]).Union(xSudokuConstraint.GetRegions(puzzle).SelectMany(x => x)).Distinct().Except(new Cell[] { targetCell }));
             var visibleCells = new HashSet<Cell>(puzzle.GetCellsVisibleForAllRegions(targetCell));
             Assert.Equal(expectedVisible, visibleCells);
         }

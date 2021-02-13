@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using Xunit;
+using SudokuSolver.Core.Constraints;
 
 namespace SudokuSolverTest
 {
@@ -81,7 +82,7 @@ namespace SudokuSolverTest
         public void TestNonConsecutiveStrategies(string description, string givendigits, string[] messages)
 #pragma warning restore xUnit1026 // Theory methods should use all of their parameters
         {
-            var puzzle = SudokuSolver.Core.Puzzle.Load(givendigits, new List<string>() { "nonconsecutive" });
+            var puzzle = SudokuSolver.Core.Puzzle.Load(givendigits, new List<BaseConstraint>() { new NonconsecutiveConstraint() });
             var solver = new SudokuSolver.Core.Solver(puzzle);
             var args = new DoWorkEventArgs(null);
             solver.DoWork(this, args);

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using SudokuSolver.Core.Constraints;
 
 namespace SudokuSolver.Core
 {
@@ -36,21 +37,21 @@ namespace SudokuSolver.Core
                     // TODO: save "given" as Cell OriginalValue
                 }
             }
-            var constraints = new List<string>();
+            var constraints = new List<BaseConstraint>();
             if (fpuzzle["diagonal+"]?.Value ?? false && fpuzzle["diagonal-"]?.Value ?? false)
-                constraints.Add("x-sudoku"); // TODO: in future remove x-sudoku in favor of individual diagonals
-            if (fpuzzle["diagonal+"]?.Value ?? false)
-                constraints.Add("diagonalup");
-            if (fpuzzle["diagonal-"]?.Value ?? false)
-                constraints.Add("diagonaldown");
+                constraints.Add(new XSudokuConstraint()); // TODO: in future remove x-sudoku in favor of individual diagonals
+            //if (fpuzzle["diagonal+"]?.Value ?? false)
+            //    constraints.Add("diagonalup");
+            //if (fpuzzle["diagonal-"]?.Value ?? false)
+            //    constraints.Add("diagonaldown");
             if (fpuzzle.antiknight?.Value ?? false)
-                constraints.Add("antiknight");
+                constraints.Add(new AntiKnightConstraint());
             if (fpuzzle.antiking?.Value ?? false)
-                constraints.Add("antiking");
+                constraints.Add(new AntiKingConstraint());
             if (fpuzzle.nonconsecutive?.Value ?? false)
-                constraints.Add("nonconsecutive");
-            if (fpuzzle.disjointgroups?.Value ?? false)
-                constraints.Add("disjointgroups");
+                constraints.Add(new NonconsecutiveConstraint());
+            //if (fpuzzle.disjointgroups?.Value ?? false)
+            //    constraints.Add("disjointgroups");
 
             var puzzle = new Puzzle(board, false, constraints);
             return puzzle;
